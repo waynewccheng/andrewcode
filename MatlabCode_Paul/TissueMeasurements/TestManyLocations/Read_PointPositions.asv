@@ -1,0 +1,26 @@
+clearvars;
+close all;
+
+for i = 1:60
+    f_name = ['tmp_' num2str(i) '_xy.txt'];
+    posxy_all(i, :) = csvread(f_name);
+    delete(f_name);
+end
+
+csvwrite('posxy_all.txt', posxy_all);
+
+posxy_allcsvwrite('posxy_all.txt');
+
+I = imread('CNS801_084_Brain.tif');
+imshow(I);
+n_row = 6;
+n_col = 10;
+
+% Plot the points and add a listener for adjustement
+k = 1;
+for i = 0:n_col-1
+ for j = 0:n_row-1
+    images.roi.Point(gca,'Position',[posxy_all(k, 1) posxy_all(k, 2)], 'Color', 'r');
+    k = k + 1;
+ end
+end

@@ -22,13 +22,22 @@ function f_show_spectra(Tlambda, xy, name_of_sample, illuminant)
     Tlambda = T(:,xy(1:500),xy(501)); % Isolate T(lambda) values at the desired pixel location(s)
     
     figure
-     for i = 1:500
+      %plot multiple pixels
+      for i = 1:500
         plot(lambda,Tlambda(:,i))
         title(['T({\lambda}) of Pixels, Bladder, ' illuminant], 'fontsize', 16, 'fontweight', 'bold')
         xlim([380 780]); ylim([0 1.5])
         xlabel('Wavelength ({\lambda})', 'fontsize', 16, 'fontweight', 'bold')
         ylabel('Transmittance (A.U.)','fontsize', 16, 'fontweight', 'bold')
         hold on
-     end
+      end
+      
+%       %plot a single pixel
+%       plot(lambda,Tlambda)
+%       title(['T({\lambda}) of a Single Pixel, Bladder, ' illuminant], 'fontsize', 16, 'fontweight', 'bold')
+%       xlim([380 780]); ylim([0 1.5])
+%       xlabel('Wavelength ({\lambda})', 'fontsize', 16, 'fontweight', 'bold')
+%       ylabel('Transmittance (A.U.)','fontsize', 16, 'fontweight', 'bold')
+%       hold on
     
 end

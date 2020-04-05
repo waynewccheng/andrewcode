@@ -1,26 +1,22 @@
 % 04-03-20: Plot the transmittance values of pixel(s) across the 380-780 nm
 % spectrum of wavelengths. 
 
-% To plot multiple pixels, use lines 39-48
-% To plot a single pixel, use lines 50-55
+% Plot title (line 36) must be changed based on the origin of the sample.
 
-% In the f_processdata_illuminants function, data is written to:
-% (Your Desired Location)\(Illuminant Name)\(Sample Name)...
-% Modify Line 23 to specify (Your Desired Location)
-% Define Sample & Illuminant names when calling the function.
+% In the f_meas_tissue.m function, processed data is written to:
+% Your Desired Location\Sample Name\Transmittance
+% Modify Line 23 to specify "Your Desired Location" for your computer and
+% define "Sample Name" when calling the function.If your processed 
+% transmittance data is saved in a different loaction that does not 
+% reference the sample name, replace the path in line 23 with your 
+% specific file path.
 
-% If processed transmittance data is saved in a different loactino that does
-% not reference the Sample &/or Illuminant names, specify the location in
-% line 23
-
-function Tlambda = f_show_spectra (name_of_sample, illuminant, x, y)
-
-    close all;
-  
+function f_show_spectra (name_of_sample, xy)
+ 
     lambda = [380:10:780].'; % Wavelengths
     
     % Declare path from which processed transmittance data can be loaded
-    p_pdata = ['D:\DigitalPathology\ColorDetail\ImageData\AndrewProcessedData\' illuminant '\' name_of_sample '\Transmittance'];
+    p_pdata = ['D:\DigitalPathology\ColorDetail\ImageData\AndrewProcessedData\' name_of_sample '\Transmittance'];
 
     % Load processed transmittance data
     cd(p_pdata); 
@@ -30,28 +26,17 @@ function Tlambda = f_show_spectra (name_of_sample, illuminant, x, y)
     cd('D:\DigitalPathology\ColorDetail\Matlab_Color\Scripts\TissueMeasurements');
     
     % Reshape transmittance into 3D matrix
-    T = reshape(trans_array_m, size(trans_array_m,1), sizex, sizey);
-    
-    % Isolate transmittance values at the desired pixel location(s)
-    Tlambda = T(:,x,y); 
+    Tlambda = reshape(trans_array_m, size(trans_array_m,1), sizex, sizey);
     
     figure
-      %plot multiple pixels
-      % Change for loop to 1:length(y) if plotting a row of pixels in y
-      for i = 1:length(x)
-        plot(lambda,Tlambda(:,i))
-        title(['T({\lambda}) of Pixels, Bladder, ' illuminant], 'fontsize', 16, 'fontweight', 'bold')
+      %plot transmittance of pixels as a function of wavelength
+      for i = 1:length(xy(:,1))
+        plot(lambda,Tlambda(:,xy(i,1),xy(i,2)))
+        title(['T({\lambda}) of Pixels, Bladder'], 'fontsize', 16, 'fontweight', 'bold')
         xlim([380 780]); ylim([0 1.5])
         xlabel('Wavelength ({\lambda})', 'fontsize', 16, 'fontweight', 'bold')
         ylabel('Transmittance (A.U.)','fontsize', 16, 'fontweight', 'bold')
         hold on
       end
       
-%       %plot a single pixel
-%       plot(lambda,Tlambda)
-%       title(['T({\lambda}) of a Single Pixel, Bladder, ' illuminant], 'fontsize', 16, 'fontweight', 'bold')
-%       xlim([380 780]); ylim([0 1.5])
-%       xlabel('Wavelength ({\lambda})', 'fontsize', 16, 'fontweight', 'bold')
-%       ylabel('Transmittance (A.U.)','fontsize', 16, 'fontweight', 'bold')
-    
 end

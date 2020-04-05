@@ -25,9 +25,6 @@
 
 
 function f_processdata_illuminants (name_of_sample,illuminant)
-
-    close all;
-
     %% 1: Camera: Calculate transmittance
     % Compute the tranmittance based on the temporal mean/std dev over numberofshots
     

@@ -11,32 +11,32 @@
 %   - Graphics section (previously, section 7) removed.
 
 % Raw Data is pulled from the path: (Your Desired Location)\(Sample Name) 
-% Modify line 37 to specify the desired location on your computer
+% Modify line 34 to specify the desired location on your computer
 
 % Processed Data is written to the path:
-% (Your Desired Location)\(Illuminant Name)\(Sample Name)
-% Modify line 42 to specify the desired location on your computer
+% (Your Desired Location)\(Illuminant)\(Sample Name)
+% Modify line 39 to specify the desired location on your computer
 
-% Modify line 62 to specify where the path where illuminant data is saved
+% Modify line 59 to specify where the path where illuminant data is saved
 % on your computer. 
 
-% Modify line 66 to specify the path where this function is saved in on 
+% Modify line 63 to specify the path where this function is saved in on 
 % your computer.
 
 
-function f_processdata_illuminants (name_of_sample,illuminant)
+function f_processdata_illuminants (sample_name,illuminant)
     %% 1: Camera: Calculate transmittance
     % Compute the tranmittance based on the temporal mean/std dev over numberofshots
     
     numberofshots = 41;
     
     %Specify raw data paths
-    p_rdata = ['D:\DigitalPathology\ColorDetail\ImageData\031320\RawData\' name_of_sample]; % Path with all of the raw data for the sample
-    p_sample = [p_rdata '\' name_of_sample '_sample']; % Path with raw data for the sample images
-    p_white = [p_rdata '\' name_of_sample '_white']; % Path with raw data for the white images
+    p_rdata = ['D:\DigitalPathology\ColorDetail\ImageData\031320\RawData\' sample_name]; % Path with all of the raw data for the sample
+    p_sample = [p_rdata '\' sample_name '_sample']; % Path with raw data for the sample images
+    p_white = [p_rdata '\' sample_name '_white']; % Path with raw data for the white images
     
     %Specify processed data paths
-    p_pdata = ['D:\DigitalPathology\ColorDetail\ImageData\AndrewProcessedData\' illuminant '\' name_of_sample]; % Path for all of the processed data
+    p_pdata = ['D:\DigitalPathology\ColorDetail\ImageData\AndrewProcessedData\' illuminant '\' sample_name]; % Path for all of the processed data
     p_trans = [p_pdata '\Transmittance']; % Path for the processed transmittance data
     p_cie = [p_pdata '\CIE_Coord']; % Path for the processed CIE data
     p_er = [p_pdata '\EndResults']; % Path for the processed End Results

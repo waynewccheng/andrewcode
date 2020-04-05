@@ -1,28 +1,31 @@
 % 04-03-20: Plot the transmittance values of pixel(s) across the 380-780 nm
 % spectrum of wavelengths. 
 
-% Plot title (line 36) must be changed based on the origin of the sample.
+% Plot title (line 38) must be changed based on the origin of the sample.
 
 % In the f_meas_tissue.m function, processed data is written to:
 % Your Desired Location\Sample Name\Transmittance
-% Modify Line 23 to specify "Your Desired Location" for your computer and
+% Modify Line 19 to specify "Your Desired Location" for your computer and
 % define "Sample Name" when calling the function.If your processed 
 % transmittance data is saved in a different loaction that does not 
 % reference the sample name, replace the path in line 23 with your 
 % specific file path.
 
-function f_show_spectra (name_of_sample, xy)
+function f_show_spectra (sample_name, xy)
  
     lambda = [380:10:780].'; % Wavelengths
     
     % Declare path from which processed transmittance data can be loaded
-    p_pdata = ['D:\DigitalPathology\ColorDetail\ImageData\AndrewProcessedData\' name_of_sample '\Transmittance'];
+    p_pdata = ['D:\DigitalPathology\ColorDetail\ImageData\AndrewProcessedData\' sample_name '\Transmittance'];
 
     % Load processed transmittance data
     cd(p_pdata); 
     load ('trans_mean_camera');
     
     % Return to the original directory where this function is saved
+    % Note: This line isn't necessary to run the code, but makes life
+    % easier if you are going to be running the function several times to
+    % make multiple plots
     cd('D:\DigitalPathology\ColorDetail\Matlab_Color\Scripts\TissueMeasurements');
     
     % Reshape transmittance into 3D matrix

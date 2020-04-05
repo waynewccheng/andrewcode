@@ -3,13 +3,13 @@
 
 % Plot title (line 38) must be changed based on the origin of the sample.
 
-% In the f_meas_tissue.m function, processed data is written to:
-% Your Desired Location\Sample Name\Transmittance
-% Modify Line 19 to specify "Your Desired Location" for your computer and
-% define "Sample Name" when calling the function.If your processed 
-% transmittance data is saved in a different loaction that does not 
-% reference the sample name, replace the path in line 23 with your 
-% specific file path.
+% In the f_meas_tissue function, processed transmittance data is saved in:
+% "Your Desired Location"\"Sample Name"\Transmittance
+% Modify the code before "sample_name" in line 19 to specify "Your Desired
+% Location" on your computer, and define "Sample Name" when calling the
+% function. If your processed transmittance data is saved in a location
+% that does not reference the sample name, replace the entire path in line
+% 23 with your specific file path.
 
 function f_show_spectra (sample_name, xy)
  

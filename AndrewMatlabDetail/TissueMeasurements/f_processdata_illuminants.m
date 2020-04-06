@@ -31,7 +31,7 @@ function f_processdata_illuminants (fn)
         %% 2: Calculate LAB
 
         % Prepares the illuminant
-        cd('D:\DigitalPathology\ColorDetail\Matlab_Color\Scripts\Data Illuminants'); % Change Directory to 'Data Illuminants' folder
+        cd('D:\DigitalPathology\ColorDetail\Matlab_Color\Scripts\AndrewMatlabDetail\Data Illuminants'); % Change Directory to 'Data Illuminants' folder
         load (['spec_cie' illuminant(i,:)],'spec'); % Load specs for illuminant
         ls = spec(1:10:401,2); % Load light source information from specs
 
@@ -39,7 +39,7 @@ function f_processdata_illuminants (fn)
         load('trans_mean_camera','trans_array_m','sizex', 'sizey'); % Load mean transmittance data
         load('trans_std_camera', 'trans_array_s'); % Load standard deviation transmittance data
 
-        cd('D:\DigitalPathology\ColorDetail\Matlab_Color\Scripts\TissueMeasurements') % Change Directory back to 'Tissue Measurements' folder
+        cd('D:\DigitalPathology\ColorDetail\Matlab_Color\Scripts\AndrewMatlabDetail\Tissue Measurements') % Change Directory back to 'Tissue Measurements' folder
         % Trans -> XYZ -> LAB with saving XYZ and LAB (values + uncertainties)
         [LAB_array, CovLAB_array, XYZ_array, CovXYZ_array] = f_transmittance2LAB(trans_array_m, trans_array_s, sizey, sizex, ls, 'y'); % 'y' top trim the max tranmsittance to 1
 

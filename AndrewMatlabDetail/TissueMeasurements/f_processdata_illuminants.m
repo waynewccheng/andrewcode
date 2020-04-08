@@ -12,34 +12,33 @@
 
 % fn -- specify the folder path that contains the transmittance data of 
 % interest
+% p_illum -- specify the name of the folder within your current directory 
+% that contains the data for the three illuminants
 
-% Modify line 34 to specify the path where illuminant data is saved on your
-% computer
-% Modify line 42 to specify the path where this function is saved in on 
-% your computer.
-
-function f_processdata_illuminants (fn)
+function f_processdata_illuminants (fn,p_illum)
 
     illuminant = ['D65';'D50';'-A-'];
 
     for i = 1:3
         %% 1: Create file paths for results
 
-        %Create path to write images to
-        mkdir([fn '\IlluminantImages']);
+        %Check if your folder for the images exists
+        if ~exist([fn '\IlluminantImages'],'dir')
+            mkdir([fn '\IlluminantImages']); %Create the folder if it doesnt
+        end
 
         %% 2: Calculate LAB
-
+        
+        %Save current directory path
+        directory = cd();
+        
         % Prepares the illuminant
-        cd('D:\DigitalPathology\ColorDetail\Matlab_Color\Scripts\AndrewMatlabDetail\Data Illuminants'); % Change Directory to 'Data Illuminants' folder
-        load (['spec_cie' illuminant(i,:)],'spec'); % Load specs for illuminant
+        load ([directory '\' p_illum '\spec_cie' illuminant(i,:)],'spec'); % Load specs for illuminant
         ls = spec(1:10:401,2); % Load light source information from specs
 
-        cd(fn); % Change directory to the folder containing transmittance data
-        load('trans_mean_camera','trans_array_m','sizex', 'sizey'); % Load mean transmittance data
-        load('trans_std_camera', 'trans_array_s'); % Load standard deviation transmittance data
+        load([fn '\trans_mean_camera'],'trans_array_m','sizex', 'sizey'); % Load mean transmittance data
+        load([fn '\trans_std_camera'], 'trans_array_s'); % Load standard deviation transmittance data
 
-        cd('D:\DigitalPathology\ColorDetail\Matlab_Color\Scripts\AndrewMatlabDetail\Tissue Measurements') % Change Directory back to 'Tissue Measurements' folder
         % Trans -> XYZ -> LAB with saving XYZ and LAB (values + uncertainties)
         [LAB_array, CovLAB_array, XYZ_array, CovXYZ_array] = f_transmittance2LAB(trans_array_m, trans_array_s, sizey, sizex, ls, 'y'); % 'y' top trim the max tranmsittance to 1
 

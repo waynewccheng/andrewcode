@@ -9,6 +9,8 @@
 % mask_c -- specify the circular mask (output from select_roi_circle)
 % mask_d -- specify the donut-shaped mask (output from select_roi_donut)
 
+% dE is output as 3 values, one for each illuminant (D65, D50, and A)
+
 function dE = f_processdata_roi(fn,p_illum,mask_c,mask_d)
         %% 1: Load Transmittance Data
         
@@ -66,8 +68,10 @@ function dE = f_processdata_roi(fn,p_illum,mask_c,mask_d)
             [LAB_array_d, CovLAB_array_d, XYZ_array_d, CovXYZ_array_d] = f_transmittance2LAB(trans_m_roi_d, trans_s_roi_d, sizey, sizex, ls, 'y'); % 'y' top trim the max tranmsittance to 1
             
             %% 3: Calculate dE between circle and donut for each illuminant
+            LAB_mean_c(:,i) = [mean(LAB_array_c(:,1)); mean(LAB_array_c(:,2)); mean(LAB_array_c(:,3))];
+            LAB_mean_d(:,i) = [mean(LAB_array_d(:,1)); mean(LAB_array_d(:,2)); mean(LAB_array_d(:,3))];
             
-            dE2D(:,:,i) = sum((LAB_array_c - LAB_array_d).^2,2).^0.5;
+            dE(i) = sum((LAB_mean_c(:,i)-LAB_mean_d(:,i)).^2).^0.5;
             
             %% 3: Reconstruct sRGB image
 
@@ -94,5 +98,5 @@ function dE = f_processdata_roi(fn,p_illum,mask_c,mask_d)
         end
         
         % Reshape the dE values to a 3D array
-        dE = reshape(dE2D,sizey,sizex,3);
+        %dE = reshape(dE2D,sizey,sizex,3);
 end

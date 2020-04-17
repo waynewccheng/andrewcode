@@ -1,6 +1,6 @@
 % 04-10-2020 -- Use transmittance data to calculate CIEXYZ, CIELAB, and 
-% sRGB coordinates for given ROIs and compute the dE between the regions 
-% for each of the three illuminants.
+% sRGB coordinates for given ROIs and assess the color uniformity of the
+% pixels in each ROI.
 
 % fn -- specify the folder path that contains the transmittance data of 
 % interest
@@ -9,9 +9,7 @@
 % mask_c -- specify the circular mask (output from select_roi_circle)
 % mask_d -- specify the donut-shaped mask (output from select_roi_donut)
 
-% dE is output as 3 values, one for each illuminant (D65, D50, and A)
-
-function dE = f_processdata_roi(fn,p_illum,mask_c,mask_d)
+function f_processdata_roi(fn,p_illum,mask_c,mask_d)
         %% 1: Load Transmittance Data
         
         % Load the transmittance data from your sample of interest
@@ -67,20 +65,16 @@ function dE = f_processdata_roi(fn,p_illum,mask_c,mask_d)
             
             [LAB_array_d, CovLAB_array_d, XYZ_array_d, CovXYZ_array_d] = f_transmittance2LAB(trans_m_roi_d, trans_s_roi_d, sizey, sizex, ls, 'y'); % 'y' top trim the max tranmsittance to 1
             
-            %% 3: Calculate dE between circle and donut for each illuminant
-            
             % Reconstruct the LAB arrays to only include pixels in the ROI
+            % by removing all nonzero(completely black) pixels
             LAB_c_recon = [nonzeros(LAB_array_c(:,1)),nonzeros(LAB_array_c(:,2)),nonzeros(LAB_array_c(:,3))];
             LAB_d_recon = [nonzeros(LAB_array_d(:,1)),nonzeros(LAB_array_d(:,2)),nonzeros(LAB_array_d(:,3))];
             
             % Compute the mean value of L*,a*,and b* for each ROI
             LAB_mean_c(:,i) = [mean(LAB_c_recon(:,1)); mean(LAB_c_recon(:,2)); mean(LAB_c_recon(:,3))];
             LAB_mean_d(:,i) = [mean(LAB_d_recon(:,1)); mean(LAB_d_recon(:,2)); mean(LAB_d_recon(:,3))];
-            
-            % Calculate dE between the two
-            dE(i) = sum((LAB_mean_c(:,i)-LAB_mean_d(:,i)).^2).^0.5;
-            
-            %% 4: Reconstruct sRGB image
+                    
+            %% 3: Reconstruct sRGB image
 
             % Rescale XYZ so that Y of illuminant is 1
             Y0 = 100;
@@ -102,7 +96,7 @@ function dE = f_processdata_roi(fn,p_illum,mask_c,mask_d)
             image(im_donut);
             axis image
                     
-            %% 5:Plot CIELAB pixel coordinates for each ROI
+            %% 4:Plot CIELAB pixel coordinates for each ROI
             
             % Convert LAB values to RGB values as 'double' class type
             c_circle = double(lab2rgb(LAB_c_recon,'OutputType','uint8'))/255; 
@@ -138,7 +132,7 @@ function dE = f_processdata_roi(fn,p_illum,mask_c,mask_d)
             title(['Donut Chromaticity Distribution, ' illuminant(i,:)]);
             xlim ([-75 25]); ylim([-25 75]); 
             
-            %% 6: Assess Pixel Uniformity
+            %% 5: Assess Pixel Uniformity
             
             % Matrix w/ avg values that is same length as LAB_c_recon
             c_LAB_avg(:,:,i) = repmat([LAB_mean_c(1,i),LAB_mean_c(2,i),LAB_mean_c(3,i)],length(LAB_c_recon(:,i)),1);

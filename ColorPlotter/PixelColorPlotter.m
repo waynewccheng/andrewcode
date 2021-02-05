@@ -17,7 +17,11 @@ clear,clc;
 
 % Declare the path and name of the image to analyze, read it into a matrix
 pic_name = 'RoscoluxPhantom_Full_1-11-21';
-filepath = (['E:\DigitalPathology\WSI_Zeiss\DigiPath_RoscoluxPhantom\' pic_name '.tif']);
+if getenv('username') == 'wcc'
+    filepath = (['' pic_name '.tif']);
+else
+    filepath = (['E:\DigitalPathology\WSI_Zeiss\DigiPath_RoscoluxPhantom\' pic_name '.tif']);
+end
 image = imread(filepath);
 
 % Declare the number of rows and columns in the phantom
